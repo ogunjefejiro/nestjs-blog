@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger"
-import { IsEmail, IsNotEmpty, MinLength } from "class-validator"
+import { IsEmail, IsEnum, IsNotEmpty, MinLength } from "class-validator"
+import { EUserType } from "./role.enum"
 
 export class LoginDto {
    @ApiProperty()
@@ -29,6 +30,10 @@ export class SignUpDto {
    @ApiProperty()
    @IsNotEmpty()
    phone: string
+   @ApiProperty({ enum: EUserType })
+   @IsNotEmpty()
+   @IsEnum(EUserType)
+   userType: EUserType
 }
 
 export class VerificationDto {

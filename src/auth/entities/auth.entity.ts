@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
-import { isEmail, IsEmail, MinLength } from "class-validator"
+import { EUserType } from "../dto/role.enum"
 
 @Schema({
    timestamps: true,
@@ -25,6 +25,14 @@ export class User {
    resetPasswordKey: string
    @Prop({ default: null })
    encryptedData: string
+   @Prop({
+      required: true,
+      default: null,
+      type: String,
+      enum: EUserType,
+      index: "text",
+   })
+   userType: EUserType
 }
 
 export const AuthSchema = SchemaFactory.createForClass(User)

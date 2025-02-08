@@ -7,6 +7,7 @@ import { MongooseModule } from "@nestjs/mongoose"
 import { User, AuthSchema } from "./entities/auth.entity"
 import { APP_GUARD } from "@nestjs/core"
 import { AuthGuard } from "./guard/auth.guard"
+import { RoleGuard } from "./guard/role.guard"
 
 @Module({
    imports: [
@@ -24,9 +25,14 @@ import { AuthGuard } from "./guard/auth.guard"
       AuthService,
       AuthDal,
       {
-         //apply authguard globally to all endpoints
+         //apply AuthGuard globally to all endpoints
          provide: APP_GUARD,
          useClass: AuthGuard,
+      },
+      {
+         //apply RoleGaurd globally to all endpoints
+         provide: APP_GUARD,
+         useClass: RoleGuard,
       },
    ],
    exports: [AuthService, AuthDal],

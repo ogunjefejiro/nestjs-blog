@@ -40,6 +40,7 @@ export class AuthDal {
          password: signUpData.password,
          codeExpiresAt: signUpData.codeExpiresAt,
          phone: signUpData.phone,
+         userType: signUpData.userType,
       })
       const { password, codeExpiresAt, resetPasswordKey, verificationCode, ...userData } =
          user.toObject()

@@ -31,6 +31,7 @@ export class AuthService {
          firstName: user.firstName,
          lastName: user.lastName,
          email: user.email,
+         userType: user.userType,
       }
 
       const { password, codeExpiresAt, resetPasswordKey, verificationCode, ...userData } =
@@ -63,6 +64,7 @@ export class AuthService {
          password: hashedPassword,
          codeExpiresAt: Date.now() + 10 * 60 * 1000, // 10 minutes
          phone: signUpDto.phone.trim(),
+         userType: signUpDto.userType,
       })
 
       if (!userData) {

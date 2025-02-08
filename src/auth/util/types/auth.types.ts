@@ -1,3 +1,5 @@
+import { EUserType } from "src/auth/dto/role.enum"
+
 export type TSignUpData = {
    email: string
    firstName: string
@@ -9,6 +11,7 @@ export type TSignUpData = {
    resetPasswordKey?: string
    isVerified?: boolean
    encryptedData?: string
+   userType: EUserType
 }
 
 export type TUpdateData = Partial<TSignUpData>

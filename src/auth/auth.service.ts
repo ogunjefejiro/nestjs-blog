@@ -4,11 +4,11 @@ import {
    InternalServerErrorException,
    UnauthorizedException,
 } from "@nestjs/common"
-import { LoginDto, SignUpDto } from "./dto/auth.dto"
+import { ForgotPasswordDto, LoginDto, ResetPasswordDto, SignUpDto } from "./dto/auth.dto"
 import { AuthDal } from "./dal/auth.dal"
 import * as bcrypt from "bcrypt"
 import { JwtService } from "@nestjs/jwt"
-import { generateVerificationCode } from "./utils/helpers"
+import { decrypt, encrypt, generateVerificationCode } from "./utils/helpers"
 
 @Injectable()
 export class AuthService {
@@ -76,5 +76,51 @@ export class AuthService {
          accessToken,
          data: userData,
       }
+   }
+
+   async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {
+      const user = await this.authDal.findOneByEmail(forgotPasswordDto.email)
+      if (!user) {
+         throw new BadRequestException("User does not exist")
+      }
+      const [encryptedData, tempKey] = encrypt(user._id.toString(), process.env.ENCRYPTION_KEY!)
+      await this.authDal.updateOneByEmail(
+         {
+            resetPasswordKey: tempKey,
+            codeExpiresAt: Date.now() + 10 * 60 * 1000,
+            encryptedData,
+         },
+         forgotPasswordDto.email,
+      )
+      const url = `${process.env.FORGOT_PSWD_URL}?encryptedCode=${encryptedData}`
+      return url
+   }
+
+   async resetPassword(resetPasswordDto: ResetPasswordDto) {
+      const user = await this.authDal.findOneByEncKey(resetPasswordDto.encryptedCode)
+      if (!user) {
+         throw new BadRequestException("User does not exist")
+      }
+      if (parseInt(user.codeExpiresAt) < Date.now()) {
+         throw new BadRequestException("Your key has expired")
+      }
+      const id = decrypt(
+         resetPasswordDto.encryptedCode,
+         process.env.ENCRYPTION_KEY!,
+         user.resetPasswordKey,
+      )
+      if (id !== user._id.toString()) {
+         throw new BadRequestException("Incorrect password reset token")
+      }
+
+      const salt = await bcrypt.genSalt()
+      const password = await bcrypt.hash(resetPasswordDto.password, salt)
+      await this.authDal.updateOneById(
+         {
+            password,
+         },
+         id,
+      )
+      return
    }
 }

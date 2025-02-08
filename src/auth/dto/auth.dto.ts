@@ -46,6 +46,13 @@ export class VerificationDto {
    code: string
 }
 
+export class ForgotPasswordDto {
+   @ApiProperty()
+   @IsEmail()
+   @IsNotEmpty()
+   email: string
+}
+
 export class ResetPasswordDto {
    @ApiProperty()
    @IsNotEmpty()

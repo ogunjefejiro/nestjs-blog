@@ -1,6 +1,6 @@
 import { Controller, Post, Body, HttpStatus, HttpCode } from "@nestjs/common"
 import { AuthService } from "./auth.service"
-import { LoginDto, SignUpDto } from "./dto/auth.dto"
+import { ForgotPasswordDto, LoginDto, ResetPasswordDto, SignUpDto } from "./dto/auth.dto"
 import { TAuthResponse } from "src/auth/utils/types/auth.types"
 import { Public } from "./utils/custom.decorator"
 
@@ -30,6 +30,31 @@ export class AuthController {
          message: "User created successfully",
          status: true,
          data: { user: data.data, token: data.accessToken },
+      }
+   }
+
+   @Public()
+   @Post("/forgot-password")
+   async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto): Promise<TAuthResponse> {
+      const url = await this.authService.forgotPassword(forgotPasswordDto)
+      return {
+         statusCode: HttpStatus.OK,
+         message: "Password reset link sent successfully",
+         status: true,
+         data: url,
+      }
+   }
+
+   @Public()
+   @Post("/reset-password")
+   @HttpCode(HttpStatus.OK)
+   async resetPassword(@Body() resetPasswordDto: ResetPasswordDto): Promise<TAuthResponse> {
+      await this.authService.resetPassword(resetPasswordDto)
+      return {
+         statusCode: HttpStatus.OK,
+         message: "Password reset successfully",
+         status: true,
+         data: null,
       }
    }
 }

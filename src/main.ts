@@ -11,13 +11,15 @@ async function bootstrap() {
       },
    })
 
+   app.setGlobalPrefix("api/v1")
+
    const config = new DocumentBuilder()
       .setTitle("Feji Blog API")
       .setDescription("API Documentation")
       .setVersion("1.0")
       .addBearerAuth()
-      .addServer("https://feji-nest-blog.onrender.com/api/v1", "Development Server")
-      .addServer("http://localhost:3030/api/v1", "Local Server")
+      .addServer("https://feji-nest-blog.onrender.com", "Development Server")
+      .addServer("http://localhost:3030", "Local Server")
       .build()
    const documentFactory = () => SwaggerModule.createDocument(app, config)
    SwaggerModule.setup("docs", app, documentFactory)

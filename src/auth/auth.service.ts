@@ -33,13 +33,8 @@ export class AuthService {
          email: user.email,
       }
 
-      const {
-         password: _password,
-         codeExpiresAt: _codeExpiresAt,
-         resetPasswordKey: _resetPasswordKey,
-         verificationCode: _verificationCode,
-         ...userData
-      } = user.toObject()
+      const { password, codeExpiresAt, resetPasswordKey, verificationCode, ...userData } =
+         user.toObject()
       const accessToken = await this.jwtService.signAsync(payload)
 
       return {

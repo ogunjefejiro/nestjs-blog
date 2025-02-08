@@ -1,11 +1,10 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
-import { IsEmail, MinLength } from "class-validator"
+import { isEmail, IsEmail, MinLength } from "class-validator"
 
 @Schema({
    timestamps: true,
 })
-export class Auth {
-   @IsEmail()
+export class User {
    @Prop({ unique: true, required: true, lowercase: true })
    email: string
    @Prop({ required: true })
@@ -15,7 +14,6 @@ export class Auth {
    @Prop()
    verificationCode: string
    @Prop({ required: true })
-   @MinLength(6)
    password: string
    @Prop()
    codeExpiresAt: string
@@ -29,4 +27,4 @@ export class Auth {
    encryptedData: string
 }
 
-export const AuthSchema = SchemaFactory.createForClass(Auth)
+export const AuthSchema = SchemaFactory.createForClass(User)

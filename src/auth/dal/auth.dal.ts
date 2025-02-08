@@ -5,14 +5,14 @@ import {
    NotFoundException,
 } from "@nestjs/common"
 import { InjectModel } from "@nestjs/mongoose"
-import { Auth } from "../entities/auth.entity"
+import { User } from "../entities/auth.entity"
 import { Model } from "mongoose"
 import * as bcrypt from "bcrypt"
 import { TChangePasswordData, TSignUpData, TUpdateData } from "src/auth/util/types/auth.types"
 
 @Injectable()
 export class AuthDal {
-   constructor(@InjectModel(Auth.name) private authModel: Model<Auth>) {}
+   constructor(@InjectModel(User.name) private authModel: Model<User>) {}
    async findOneByEmail(email: string) {
       return await this.authModel.findOne({
          email,

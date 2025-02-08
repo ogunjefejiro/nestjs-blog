@@ -2,7 +2,7 @@ import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from
 import { Reflector } from "@nestjs/core"
 import { JwtService } from "@nestjs/jwt"
 import { Request } from "express"
-import { ROLES_KEY } from "src/utils/custom.decorator"
+import { ROLES_KEY } from "src/auth/utils/custom.decorator"
 import { EUserType } from "../dto/role.enum"
 
 @Injectable()

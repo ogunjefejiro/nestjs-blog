@@ -1,16 +1,14 @@
 import { Controller, Post, Body, HttpStatus, HttpCode } from "@nestjs/common"
 import { AuthService } from "./auth.service"
 import { LoginDto, SignUpDto } from "./dto/auth.dto"
-import { TAuthResponse } from "src/auth/util/types/auth.types"
-import { Public, Roles } from "src/utils/custom.decorator"
-import { EUserType } from "./dto/role.enum"
+import { TAuthResponse } from "src/auth/utils/types/auth.types"
+import { Public } from "./utils/custom.decorator"
 
 @Controller("auth")
 export class AuthController {
    constructor(private authService: AuthService) {}
 
    @Public()
-   @Roles(EUserType.USER)
    @Post("login")
    @HttpCode(HttpStatus.OK)
    async login(@Body() loginDto: LoginDto): Promise<TAuthResponse> {

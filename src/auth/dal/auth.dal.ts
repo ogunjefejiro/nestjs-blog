@@ -8,7 +8,7 @@ import { InjectModel } from "@nestjs/mongoose"
 import { User } from "../entities/auth.entity"
 import { Model } from "mongoose"
 import * as bcrypt from "bcrypt"
-import { TChangePasswordData, TSignUpData, TUpdateData } from "src/auth/util/types/auth.types"
+import { TChangePasswordData, TSignUpData, TUpdateData } from "src/auth/utils/types/auth.types"
 
 @Injectable()
 export class AuthDal {

@@ -6,9 +6,9 @@ import {
 } from "@nestjs/common"
 import { LoginDto, SignUpDto } from "./dto/auth.dto"
 import { AuthDal } from "./dal/auth.dal"
-import { generateVerificationCode } from "src/utils/helpers"
 import * as bcrypt from "bcrypt"
 import { JwtService } from "@nestjs/jwt"
+import { generateVerificationCode } from "./utils/helpers"
 
 @Injectable()
 export class AuthService {

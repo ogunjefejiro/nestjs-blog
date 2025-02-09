@@ -20,7 +20,14 @@ export class BlogDal {
    }
 
    async findAll() {
-      const blogs = await this.blogModel.find().sort({ createdAt: -1 })
+      const blogs = await this.blogModel
+         .find()
+         .sort({ createdAt: -1 })
+         .populate({
+            path: "comments",
+            populate: { path: "author", select: "name email firstName lastName" },
+         })
+         .populate("author", "name email firstName lastName")
       const count = await this.blogModel.countDocuments()
 
       return {

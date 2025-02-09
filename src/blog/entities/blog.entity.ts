@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 import { Model, Schema as MongooseSchema } from "mongoose"
 import slugify from "slugify"
-import { User } from "src/auth/entities/auth.entity"
 
 @Schema({
    timestamps: true,
@@ -15,10 +14,10 @@ export class Blog {
    body: string
    @Prop({ unique: true, immutable: true })
    slug: string
-   @Prop({ type: MongooseSchema.Types.ObjectId, ref: User.name, index: "text" })
+   @Prop({ type: MongooseSchema.Types.ObjectId, ref: "User", index: "text" })
    author: MongooseSchema.Types.ObjectId
-   //  @Prop([{ type: MongooseSchema.Types.ObjectId, ref: User.name, index: "text" }])
-   //  comments: MongooseSchema.Types.ObjectId
+   @Prop([{ type: MongooseSchema.Types.ObjectId, ref: "Comment", index: "text" }])
+   comments: MongooseSchema.Types.ObjectId[]
 }
 
 export const BlogSchema = SchemaFactory.createForClass(Blog)

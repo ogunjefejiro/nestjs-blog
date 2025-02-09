@@ -35,4 +35,4 @@ export class User {
    userType: EUserType
 }
 
-export const AuthSchema = SchemaFactory.createForClass(User)
+export const UserSchema = SchemaFactory.createForClass(User)

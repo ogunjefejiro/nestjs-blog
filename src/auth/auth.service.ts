@@ -4,7 +4,13 @@ import {
    InternalServerErrorException,
    UnauthorizedException,
 } from "@nestjs/common"
-import { ForgotPasswordDto, LoginDto, ResetPasswordDto, SignUpDto } from "./dto/auth.dto"
+import {
+   ForgotPasswordDto,
+   LoginDto,
+   ProfileDto,
+   ResetPasswordDto,
+   SignUpDto,
+} from "./dto/auth.dto"
 import { AuthDal } from "./dal/auth.dal"
 import * as bcrypt from "bcrypt"
 import { JwtService } from "@nestjs/jwt"
@@ -76,6 +82,31 @@ export class AuthService {
          accessToken,
          data: userData,
       }
+   }
+
+   async updateProfile(profileDto: ProfileDto, userId: string) {
+      const userData = await this.authDal.findByIdAndUpdate(profileDto, userId)
+
+      return userData
+   }
+
+   async findProfile(id: string) {
+      const userData = await this.authDal.findOneByPk(id)
+
+      if (!userData) {
+         throw new BadRequestException("User not found")
+      }
+
+      const {
+         verificationCode,
+         password,
+         codeExpiresAt,
+         resetPasswordKey,
+         encryptedData,
+         ...data
+      } = userData.toObject()
+
+      return data
    }
 
    async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {

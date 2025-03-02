@@ -19,16 +19,25 @@ export class BlogDal {
       return blog
    }
 
-   async findAll() {
+   async findAll(searchTerm?: string) {
+      const filter = searchTerm
+         ? {
+              $or: [
+                 { title: { $regex: searchTerm, $options: "i" } }, // Case-insensitive search in title
+                 { snippet: { $regex: searchTerm, $options: "i" } },
+              ],
+           }
+         : {} // If no searchTerm, return all blogs
+
       const blogs = await this.blogModel
-         .find()
+         .find(filter)
          .sort({ createdAt: -1 })
          .populate({
             path: "comments",
             populate: { path: "author", select: "name email firstName lastName" },
          })
          .populate("author", "name email firstName lastName")
-      const count = await this.blogModel.countDocuments()
+      const count = await this.blogModel.countDocuments(filter)
 
       return {
          blogs,

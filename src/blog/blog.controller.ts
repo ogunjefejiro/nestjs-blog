@@ -8,10 +8,12 @@ import {
    Delete,
    HttpStatus,
    Request,
+   Query,
 } from "@nestjs/common"
 import { BlogService } from "./blog.service"
 import { CreateBlogDto } from "./dto/create-blog.dto"
 import { UpdateBlogDto } from "./dto/update-blog.dto"
+import { ApiQuery } from "@nestjs/swagger"
 
 @Controller("blog")
 export class BlogController {
@@ -30,8 +32,9 @@ export class BlogController {
    }
 
    @Get()
-   async findAll() {
-      const data = await this.blogService.findAll()
+   @ApiQuery({ name: "searchTerm", required: false, description: "Search by title or snippet" })
+   async findAll(@Query("searchTerm") searchTerm?: string) {
+      const data = await this.blogService.findAll(searchTerm)
 
       return {
          statusCode: HttpStatus.OK,

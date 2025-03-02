@@ -5,7 +5,7 @@ import { EUserType } from "../dto/role.enum"
    timestamps: true,
 })
 export class User {
-   @Prop({ unique: true, required: true, lowercase: true })
+   @Prop({ unique: true, required: true, lowercase: true, immutable: true })
    email: string
    @Prop({ required: true })
    firstName: string
@@ -13,7 +13,7 @@ export class User {
    lastName: string
    @Prop()
    verificationCode: string
-   @Prop({ required: true })
+   @Prop({ required: true, immutable: true })
    password: string
    @Prop()
    codeExpiresAt: string
@@ -31,6 +31,7 @@ export class User {
       type: String,
       enum: EUserType,
       index: "text",
+      immutable: true,
    })
    userType: EUserType
 }

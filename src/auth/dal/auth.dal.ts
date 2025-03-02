@@ -59,6 +59,11 @@ export class AuthDal {
       await this.authModel.updateOne({ _id: id }, updateData)
    }
 
+   async findByIdAndUpdate(updateData: TUpdateData, id: string) {
+      const data = await this.authModel.findByIdAndUpdate(id, updateData, { new: true })
+      return data
+   }
+
    async updateUserPassword(updatePasswordData: TChangePasswordData) {
       const user = await this.authModel.findById(updatePasswordData.id).select("+password") // Ensure password is retrieved
 

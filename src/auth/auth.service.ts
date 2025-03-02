@@ -4,7 +4,13 @@ import {
    InternalServerErrorException,
    UnauthorizedException,
 } from "@nestjs/common"
-import { ForgotPasswordDto, LoginDto, ResetPasswordDto, SignUpDto } from "./dto/auth.dto"
+import {
+   ForgotPasswordDto,
+   LoginDto,
+   ProfileDto,
+   ResetPasswordDto,
+   SignUpDto,
+} from "./dto/auth.dto"
 import { AuthDal } from "./dal/auth.dal"
 import * as bcrypt from "bcrypt"
 import { JwtService } from "@nestjs/jwt"
@@ -76,6 +82,16 @@ export class AuthService {
          accessToken,
          data: userData,
       }
+   }
+
+   async updateProfile(profileDto: ProfileDto, userId: string) {
+      const userData = await this.authDal.findByIdAndUpdate(profileDto, userId)
+
+      // if (!!userData) {
+      //    throw new InternalServerErrorException("Something went wrong")
+      // }
+
+      return userData
    }
 
    async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {

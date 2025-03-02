@@ -23,8 +23,8 @@ export class BlogService {
       return blog
    }
 
-   async findAll() {
-      const data = await this.blogDal.findAll()
+   async findAll(searchTerm?: string) {
+      const data = await this.blogDal.findAll(searchTerm)
 
       return {
          data: data.blogs,

@@ -20,7 +20,7 @@ async function bootstrap() {
       .setDescription("API Documentation")
       .setVersion("1.0")
       .addBearerAuth()
-      .addServer("https://feji-nest-blog.onrender.com", "Development Server")
+      .addServer("https://nestjs-blog-m5mh.onrender.com", "Development Server")
       .addServer("http://localhost:3030", "Local Server")
       .build()
    const documentFactory = () => SwaggerModule.createDocument(app, config)

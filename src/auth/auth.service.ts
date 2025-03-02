@@ -87,11 +87,26 @@ export class AuthService {
    async updateProfile(profileDto: ProfileDto, userId: string) {
       const userData = await this.authDal.findByIdAndUpdate(profileDto, userId)
 
-      // if (!!userData) {
-      //    throw new InternalServerErrorException("Something went wrong")
-      // }
-
       return userData
+   }
+
+   async findProfile(id: string) {
+      const userData = await this.authDal.findOneByPk(id)
+
+      if (!userData) {
+         throw new BadRequestException("User not found")
+      }
+
+      const {
+         verificationCode,
+         password,
+         codeExpiresAt,
+         resetPasswordKey,
+         encryptedData,
+         ...data
+      } = userData.toObject()
+
+      return data
    }
 
    async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {

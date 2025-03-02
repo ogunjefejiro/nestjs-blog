@@ -1,4 +1,14 @@
-import { Controller, Post, Body, HttpStatus, HttpCode, Patch, Request } from "@nestjs/common"
+import {
+   Controller,
+   Post,
+   Body,
+   HttpStatus,
+   HttpCode,
+   Patch,
+   Request,
+   Param,
+   Get,
+} from "@nestjs/common"
 import { AuthService } from "./auth.service"
 import {
    ForgotPasswordDto,
@@ -51,6 +61,18 @@ export class AuthController {
       return {
          statusCode: HttpStatus.OK,
          message: "Profile updated successfully",
+         status: true,
+         data,
+      }
+   }
+
+   @Get("profile/:id")
+   async findProfile(@Param("id") id: string): Promise<TAuthResponse> {
+      const data = await this.authService.findProfile(id)
+
+      return {
+         statusCode: HttpStatus.OK,
+         message: "Profile fetched successfully",
          status: true,
          data,
       }
